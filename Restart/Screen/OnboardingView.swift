@@ -82,7 +82,7 @@ how much love we put into giving.
                     HStack{
                         Capsule()
                             .fill(Color("ColorRed"))
-                            .frame(width: 80)
+                            .frame(width: buttonOffset +  80)
                         
                         Spacer()
                     }
@@ -104,15 +104,38 @@ how much love we put into giving.
                         }
                         .foregroundColor(.white)
                         .frame(width: 80, height: 80, alignment: .center)
-                        .onTapGesture {
+                        .offset(x: buttonOffset)
+                        .gesture(DragGesture()
+                                    .onChanged{ gesture in
+                            if gesture.translation.width > 0 && buttonOffset <= buttonWidth - 80{
+                                buttonOffset = gesture.translation.width
+                            }}
+                                 
+                                    .onEnded{ _ in
+                                             if buttonOffset > buttonWidth / 2 {
+                            
+                            buttonOffset = buttonWidth - 80
                             isOnboardingViewActive = false
+                            
+                            
+                            
+                        } else {
+                            buttonOffset = 0
                         }
+                                              
+                                              }
+                                 
+                        )//: GESTURE
+                        
+                        //                        .onTapGesture {
+                        //                            isOnboardingViewActive = false
+                        //                        }
                         
                         Spacer()
                         
                     }//: HSTACK
                 }//: FOOTER
-                .frame(height: 80, alignment: .center)
+                .frame(width:buttonWidth, height: 80, alignment: .center)
                 .padding()
             }//: VSTACK
         }//: ZSTACK
